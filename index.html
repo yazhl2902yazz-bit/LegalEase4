@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LegalEase – AI-Powered Legal Document Generator</title>
+  
+  <!-- Google Fonts: Cinzel, Playfair Display & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- html2pdf.js for Client-Side PDF Generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+
+  <!-- ========================================================================
+       SCREEN 1: Centered Login View
+       ======================================================================== -->
+  <section id="loginSection">
+    <div class="login-card">
+      <div class="login-brand-icon">⚖️</div>
+      <h1>LegalEase</h1>
+      <p class="login-subtitle">AI-Powered Legal Document Generator</p>
+
+      <form id="loginForm" class="login-form">
+        <div class="form-group">
+          <label for="loginEmail">Email Address</label>
+          <div class="input-with-icon">
+            <span class="icon-span">✉️</span>
+            <input type="email" id="loginEmail" placeholder="name@example.com" autocomplete="email" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <div class="input-with-icon">
+            <span class="icon-span">🔒</span>
+            <input type="password" id="loginPassword" placeholder="Enter your password" autocomplete="current-password" required>
+          </div>
+        </div>
+
+        <div id="loginErrorMessage" class="error-text" style="margin-bottom: 12px; font-weight: 500;"></div>
+
+        <button type="submit" class="btn-primary" id="btnLoginSubmit">
+          <span>Sign In & Continue</span> ➔
+        </button>
+      </form>
+
+      <!-- Quick Demo Access Helper -->
+      <div class="login-demo-helper">
+        <span>Need quick access to test?</span><br>
+        <button type="button" class="btn-demo-quick" onclick="fillDemoLogin()">
+          <span>⚡</span> 1-Click Demo Login
+        </button>
+      </div>
+
+      <div class="login-disclaimer-pill">
+        ⚖️ <strong>Educational Project:</strong> Generated documents are for informational purposes only and are not legal advice.
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SCREEN 2: Main Application & Home Page
+       ======================================================================== -->
+  <div id="mainAppSection">
+
+    <!-- Navigation Bar -->
+    <header class="navbar">
+      <div class="container nav-container">
+        <a href="#home" class="nav-brand">
+          <span class="nav-brand-symbol">⚖️</span>
+          <span>LegalEase</span>
+          <span class="nav-brand-badge">AI 2.0</span>
+        </a>
+
+        <!-- Desktop & Mobile Navigation Links -->
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#home" class="nav-link active">Home</a></li>
+          <li><a href="#documentOptions" class="nav-link">Documents</a></li>
+          <li><a href="#aiAssistantSection" class="nav-link">AI Assistant</a></li>
+          <li><a href="#myDocsSection" class="nav-link">My Documents</a></li>
+          <li><a href="#disclaimerSection" class="nav-link">Disclaimer</a></li>
+
+          <!-- Mobile Only User Info -->
+          <li class="mobile-user-row" style="display: none;">
+            <span id="mobileUserEmail" style="font-size: 0.85rem; color: var(--text-muted);">User Active</span>
+            <button type="button" class="btn-logout" style="padding: 4px 10px; font-size: 0.78rem;">Logout</button>
+          </li>
+        </ul>
+
+        <!-- User Status & Logout -->
+        <div class="nav-user-suite">
+          <div class="user-badge" title="Active Session">
+            <span class="user-badge-icon">👤</span>
+            <span id="userDisplayEmail">user@legalease.io</span>
+          </div>
+          <button type="button" class="btn-logout">
+            <span>🚪</span> Logout
+          </button>
+        </div>
+
+        <!-- Mobile Hamburger Toggle -->
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu">
+          ☰
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main>
+
+      <!-- Hero Section -->
+      <section id="home" class="hero-section">
+        <div class="container">
+          <div class="hero-content">
+            <div class="hero-pill">
+              <span>✨</span> Next-Generation Legal Drafting Engine
+            </div>
+            <h1>AI-Powered Legal Document Generator</h1>
+            <p>
+              Draft polished, professionally structured legal agreements, letters, and notices in minutes. 
+              Equipped with smart validation, dual plain-English AI explanations, and seamless PDF export.
+            </p>
+
+            <div class="hero-actions">
+              <button type="button" class="btn-hero-cta" onclick="document.getElementById('documentOptions').scrollIntoView({behavior:'smooth'})">
+                <span>⚡</span> Get Started Now
+              </button>
+              <button type="button" class="btn-hero-secondary" onclick="document.getElementById('aiAssistantSection').scrollIntoView({behavior:'smooth'})">
+                <span>🤖</span> Ask AI Assistant
+              </button>
+            </div>
+
+            <!-- Value Highlights -->
+            <div class="hero-stats">
+              <div class="stat-item">
+                <span class="stat-icon">📑</span>
+                <div class="stat-text">
+                  <strong>5 Essential Templates</strong>
+                  <span>Rental, Notice, Affidavit & more</span>
+                </div>
+              </div>
+              <div class="stat-item">
+                <span class="stat-icon">🛡️</span>
+                <div class="stat-text">
+                  <strong>100% Client-Side Privacy</strong>
+                  <span>Data never leaves your browser</span>
+                </div>
+              </div>
+              <div class="stat-item">
+                <span class="stat-icon">💡</span>
+                <div class="stat-text">
+                  <strong>Plain-English Breakdown</strong>
+                  <span>Every clause simplified</span>
+                </div>
+              </div>
+              <div class="stat-item">
+                <span class="stat-icon">📥</span>
+                <div class="stat-text">
+                  <strong>Instant PDF Export</strong>
+                  <span>Ready to print and sign</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Document Options Section (5 Document Types) -->
+      <section id="documentOptions" class="section-wrapper">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag">Document Catalog</span>
+            <h2>Select Document Type</h2>
+            <p>Choose the legal template you wish to draft. Each option opens a guided detail form.</p>
+          </div>
+
+          <div class="document-grid">
+            <!-- 1. Rental Agreement -->
+            <div class="doc-card" data-doctype="rental">
+              <div class="doc-icon-wrap">🏠</div>
+              <h3>Rental Agreement</h3>
+              <p>Residential lease deed with rent, deposit, notice period, and maintenance covenants.</p>
+              <div class="doc-meta">
+                <span>⏱️ ~2 min drafting</span> • <span>6 Clauses</span>
+              </div>
+              <button type="button" class="btn-select-doc">Draft Agreement ➔</button>
+            </div>
+
+            <!-- 2. Leave Letter -->
+            <div class="doc-card" data-doctype="leave">
+              <div class="doc-icon-wrap">📄</div>
+              <h3>Leave Letter</h3>
+              <p>Formal academic or workplace leave application with duration and task handover details.</p>
+              <div class="doc-meta">
+                <span>⏱️ ~1 min drafting</span> • <span>Formal Header</span>
+              </div>
+              <button type="button" class="btn-select-doc">Draft Letter ➔</button>
+            </div>
+
+            <!-- 3. Legal Notice -->
+            <div class="doc-card" data-doctype="notice">
+              <div class="doc-icon-wrap">⚠️</div>
+              <h3>Legal Notice</h3>
+              <p>Formal statutory demand notice setting forth dispute facts, claim sum, and 15-day compliance.</p>
+              <div class="doc-meta">
+                <span>⏱️ ~3 min drafting</span> • <span>Demand Notice</span>
+              </div>
+              <button type="button" class="btn-select-doc">Draft Notice ➔</button>
+            </div>
+
+            <!-- 4. Simple Affidavit -->
+            <div class="doc-card" data-doctype="affidavit">
+              <div class="doc-icon-wrap">📝</div>
+              <h3>Simple Affidavit</h3>
+              <p>Sworn statement under solemn oath with deponent identity, affirmations, and verification jurat.</p>
+              <div class="doc-meta">
+                <span>⏱️ ~2 min drafting</span> • <span>Notary Format</span>
+              </div>
+              <button type="button" class="btn-select-doc">Draft Affidavit ➔</button>
+            </div>
+
+            <!-- 5. Complaint Letter -->
+            <div class="doc-card" data-doctype="complaint">
+              <div class="doc-icon-wrap">📩</div>
+              <h3>Complaint Letter</h3>
+              <p>Consumer grievance letter detailing product defect or service deficiency with remedy demanded.</p>
+              <div class="doc-meta">
+                <span>⏱️ ~2 min drafting</span> • <span>Grievance Desk</span>
+              </div>
+              <button type="button" class="btn-select-doc">Draft Complaint ➔</button>
+            </div>
+          </div>
+
+          <!-- Dynamic Form Section -->
+          <div id="formSection">
+            <div class="form-header-bar">
+              <div class="form-title-group">
+                <h3 id="formActiveTitle"><span>📄</span> Document Details</h3>
+                <p id="formActiveTagline">Fill in the required information to generate your legal document.</p>
+              </div>
+              <div class="form-quick-tools">
+                <button type="button" class="btn-tool btn-sample-data" onclick="fillSampleData()" title="Autofill realistic sample data for testing">
+                  <span>✨</span> Fill Sample Data
+                </button>
+                <button type="button" class="btn-tool" onclick="clearActiveForm()" title="Reset all input fields">
+                  <span>🔄</span> Reset
+                </button>
+                <button type="button" class="btn-tool" onclick="hideFormSection()" title="Close form and return to cards">
+                  <span>✕</span> Close
+                </button>
+              </div>
+            </div>
+
+            <!-- Missing Details Validation Banner Alert -->
+            <div id="validationAlert" class="validation-alert">
+              <span style="font-size: 20px;">⚠️</span>
+              <div id="validationAlertMessage">Please complete all required fields marked with an asterisk (*).</div>
+            </div>
+
+            <!-- Injected Dynamic Fields -->
+            <div id="dynamicFormContainer"></div>
+
+            <!-- Form Submit & Action Buttons -->
+            <div class="form-actions">
+              <button type="button" class="btn-secondary" onclick="hideFormSection()">
+                Cancel
+              </button>
+              <button type="button" class="btn-primary" style="width: auto; padding: 13px 32px;" onclick="generateDocument()">
+                <span>⚡</span> Generate Document
+              </button>
+            </div>
+          </div>
+
+          <!-- Generated Document Output Studio -->
+          <div id="outputSection">
+            <!-- Toolbar -->
+            <div class="output-toolbar">
+              <div class="output-title-group">
+                <h4><span>📜</span> Generated Document Draft</h4>
+                <span id="outputDocTitle">Ready for review & download</span>
+              </div>
+              <div class="output-btn-group">
+                <button type="button" class="btn-action" id="btnToggleEdit">
+                  <span>✏️</span> Edit Document
+                </button>
+                <button type="button" class="btn-action" id="btnCopyDoc">
+                  <span>📋</span> Copy Text
+                </button>
+                <button type="button" class="btn-action btn-gold" id="btnDownloadPdf">
+                  <span>⬇️</span> Download PDF
+                </button>
+                <button type="button" class="btn-action" id="btnSaveDoc">
+                  <span>💾</span> Save to My Docs
+                </button>
+              </div>
+            </div>
+
+            <!-- Dual Layout: Formal Paper + Plain-English AI Explanation -->
+            <div class="output-layout">
+              <!-- Left / Main: The Legal Paper -->
+              <div class="paper-wrapper">
+                <div id="editModeIndicator" class="edit-mode-indicator">
+                  <span>✏️ <strong>Live Edit Mode Active:</strong> You can click anywhere directly inside the document below to edit clauses.</span>
+                  <button type="button" class="btn-tool" style="padding: 3px 8px; font-size: 0.76rem;" onclick="toggleEditMode()">Save & Finish</button>
+                </div>
+                <div id="legalPaper" class="legal-paper">
+                  <!-- Injected formatted legal document -->
+                </div>
+              </div>
+
+              <!-- Right: Plain-English AI Explanation -->
+              <div class="explanation-panel" id="explanationContainer">
+                <!-- Injected AI breakdown cards -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- AI Legal Assistant Section -->
+      <section id="aiAssistantSection" class="section-wrapper" style="padding-top: 0;">
+        <div class="container">
+          <div class="ai-section">
+            <div class="section-header" style="margin-bottom: 20px;">
+              <span class="section-tag">Intelligent Helper</span>
+              <h2>🤖 AI Legal Assistant</h2>
+              <p>Get instant guidance on document requirements, standard clauses, and procedural checklists.</p>
+            </div>
+
+            <div class="ai-widget-container">
+              <!-- Quick Suggestion Prompts -->
+              <div class="ai-prompt-library">
+                <h4>Frequently Asked Topics</h4>
+                <p>Click any topic below to request guidance from the assistant:</p>
+                <div class="prompt-chips" id="aiPromptChips">
+                  <button type="button" class="prompt-chip" data-prompt="What details are needed for a Rental Agreement?">
+                    <span>🏠</span> What is required for a Rental Agreement?
+                  </button>
+                  <button type="button" class="prompt-chip" data-prompt="How does a 15-day Legal Notice work?">
+                    <span>⚠️</span> How does a 15-day Legal Notice work?
+                  </button>
+                  <button type="button" class="prompt-chip" data-prompt="What makes a Simple Affidavit legally valid?">
+                    <span>📝</span> What makes an Affidavit legally valid?
+                  </button>
+                  <button type="button" class="prompt-chip" data-prompt="What should I include in a consumer Complaint Letter?">
+                    <span>📩</span> Key details for a Complaint Letter?
+                  </button>
+                  <button type="button" class="prompt-chip" data-prompt="Is this document legally binding or educational?">
+                    <span>⚖️</span> Is this document legally binding?
+                  </button>
+                </div>
+              </div>
+
+              <!-- Chat Window -->
+              <div class="ai-chat-window">
+                <div class="ai-chat-header">
+                  <div class="ai-bot-identity">
+                    <div class="ai-avatar">⚖️</div>
+                    <div>
+                      <strong>LegalEase Assistant</strong>
+                      <span>Ready to advise</span>
+                    </div>
+                  </div>
+                  <span style="font-size: 0.76rem; color: var(--text-light);">AI Guidance 2.0</span>
+                </div>
+
+                <div class="ai-messages-list" id="aiMessagesList">
+                  <div class="message-bubble message-bot">
+                    Hello! I am your <strong>LegalEase Assistant</strong>. Ask me anything about creating your legal documents, standard clauses, or required attachments.
+                  </div>
+                </div>
+
+                <div class="ai-input-bar">
+                  <input type="text" id="aiInputQuery" placeholder="Ask a question (e.g. 'What is needed for a rental agreement?')...">
+                  <button type="button" class="btn-ai-send" id="btnAiSend">
+                    <span>Send</span> ➔
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- My Documents Section (Browser Local Storage) -->
+      <section id="myDocsSection" class="section-wrapper" style="padding-top: 0;">
+        <div class="container">
+          <div class="my-docs-header">
+            <div>
+              <h3><span>📁</span> My Documents <span class="docs-count-badge" id="savedDocsCount">0 saved</span></h3>
+              <p style="color:var(--text-muted); font-size:0.9rem;">Your drafted documents are securely saved in your browser's local storage.</p>
+            </div>
+            <button type="button" class="btn-tool" id="btnClearAllDocs" style="color: var(--danger); border-color: #fecaca;">
+              <span>🗑️</span> Clear All
+            </button>
+          </div>
+
+          <div id="savedDocsContainer">
+            <!-- Injected saved document cards -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Mandatory Legal Disclaimer Card -->
+      <section id="disclaimerSection" class="container">
+        <div class="disclaimer-card">
+          <div class="disclaimer-icon">⚖️</div>
+          <div class="disclaimer-text">
+            <h4>Mandatory Legal Disclaimer</h4>
+            <p>
+              "This website is an educational project. Generated documents are for general informational purposes only and are not legal advice."
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Global Footer -->
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-brand">
+            <h4>⚖️ LegalEase</h4>
+            <p>
+              Simplifying legal document generation through intelligent templating, clear validation, and plain-English clause translations.
+            </p>
+          </div>
+
+          <ul class="footer-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#documentOptions">Document Generator</a></li>
+            <li><a href="#aiAssistantSection">AI Assistant</a></li>
+            <li><a href="#myDocsSection">My Documents</a></li>
+            <li><a href="#disclaimerSection">Disclaimer</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-bottom">
+          <p class="footer-disclaimer-quote">
+            "This website is an educational project. Generated documents are for general informational purposes only and are not legal advice."
+          </p>
+          <p>© 2026 LegalEase • Built with HTML5, CSS3, & Modern Vanilla JavaScript • Ready for GitHub Pages</p>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Notification Toast Container -->
+  <div id="toastContainer"></div>
+
+  <!-- Main JavaScript Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
